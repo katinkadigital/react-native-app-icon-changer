@@ -1,5 +1,6 @@
 package com.appiconchanger
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.ComponentName
@@ -23,6 +24,7 @@ class AppIconChangerModule(
     companion object {
         const val NAME = "DynamicIconManager"
         private const val MAIN_ACTIVITY_BASE_NAME = ".MainActivity"
+        private const val KILL_APP = 0
     }
 
     private val classesToKill: MutableSet<String> = mutableSetOf()
@@ -78,6 +80,7 @@ class AppIconChangerModule(
         }
     }
 
+    @SuppressLint("WrongConstant")
     private fun completeIconChange() {
         val activity = currentActivity ?: return
 
@@ -85,7 +88,7 @@ class AppIconChangerModule(
             activity.packageManager.setComponentEnabledSetting(
                 ComponentName(packageName, className),
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
+                KILL_APP
             )
         }
         classesToKill.clear()
